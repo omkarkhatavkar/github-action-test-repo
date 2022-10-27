@@ -7,23 +7,28 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - name: Something that might fail
+        run: exit 1
+      - name: Create Issue on Failed workflow
+        if: ${{ failure() }}
+        uses: dacbd/create-issue-action@main
+        with:
+          token: ${{ github.token }}
+          title: |
+            [Failed-AutoCherryPick] - ${{ github.event.pull_request.title }}
+          body: |
+            #### Auto-Cherry-Pick WorkFlow Failure:
+            
+            - [Failed Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            
+            - [PR Number](https://github.com/${{ github.repository }}/pull/${{ github.event.number }})
+            
+            - Workflow Name - `${{ github.workflow }}`
+            
+            - Job -           `${{ github.job }}`
+            
+            - Status -        `${{ job.status }}`
+          labels: auto-cherry-pick-failed
+          assignees: "${{ github.event.pull_request.user.login }}"
 
-    # Mock to test workflow
-    - name: Test app
-      id: test-app # will be referenced later
-      run: |
-        echo "Testing app (randomly fails)"
-        if [[ $(($RANDOM % 2)) == 0 ]]; then exit 0; else exit 1; fi
-
-    # runs always
-    - name: test-clean
-      if: always()
-      run: echo "Cleanup after tests"
-
-    # runs if previous jobs failed and test-app was not successful (failure/cancelled)
-    - name: action-slack
-      if: failure() && steps.test-app.outcome != 'success'
-      run: |
-        echo "Run action-slack"
-        echo "Result of test-app was '${{ steps.test-app.outcome }}'"
