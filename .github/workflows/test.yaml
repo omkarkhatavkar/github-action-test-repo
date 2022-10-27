@@ -15,11 +15,15 @@ jobs:
         uses: dacbd/create-issue-action@main
         with:
           token: ${{ github.token }}
-          title: Action workflow failed.
+          title: AutoCherry-pick workflow failed for #${{ github.event.number }}
           body: |
-            ### Context
+            ### AutoCherry-pick Failure:
+            
             [Failed Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
             [Codebase](https://github.com/${{ github.repository }}/tree/${{ github.sha }})
-            Workflow name - `${{ github.workflow }}`
+            Workflow Name - `${{ github.workflow }}`
             Job -           `${{ github.job }}`
-            status -        `${{ job.status }}`
+            Status -        `${{ job.status }}`
+
+          labels: auto-cherry-pick-failed
+          assignees: "{{ github.event.issue.user.login }}"
