@@ -16,19 +16,19 @@ jobs:
         with:
           token: ${{ github.token }}
           title: |
-            [Failed-Auto-Cherry-Pick]-${{ github.event.pull_request.title }}
+            [Failed-Auto-Cherry-Pick] - ${{ github.event.pull_request.title }}
           body: |
-            #### Auto-Cherry-Pick Failure:
+            #### Auto-Cherry-Pick WorkFlow Failure:
             
-            [Failed Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            - [Failed Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
             
-            [Codebase](https://github.com/${{ github.repository }}/tree/${{ github.sha }})
+            - [PR Number](https://github.com/${{ github.repository }}/pulls/${{ github.event.number }})
             
-            Workflow Name - `${{ github.workflow }}`
+            - Workflow Name - `${{ github.workflow }}`
             
-            Job -           `${{ github.job }}`
+            - Job -           `${{ github.job }}`
             
-            Status -        `${{ job.status }}`
+            - Status -        `${{ job.status }}`
 
           labels: auto-cherry-pick-failed
           assignees: "${{ github.event.pull_request.user.login }}"
