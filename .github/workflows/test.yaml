@@ -15,7 +15,8 @@ jobs:
         uses: dacbd/create-issue-action@main
         with:
           token: ${{ github.token }}
-          title: [Failed-Auto-Cherry-Pick] ${{ github.event.pull_request.title }}
+          title: |
+            [Failed-Auto-Cherry-Pick]-${{ github.event.pull_request.title }}
           body: |
             #### Auto-Cherry-Pick Failure:
             
