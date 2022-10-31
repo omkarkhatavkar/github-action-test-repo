@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Something that might fail
-        run: exit 1
+        run: exit 0
       - name: Create Issue on Failed workflow
         if: ${{ failure() }}
         uses: dacbd/create-issue-action@main
