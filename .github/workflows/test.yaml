@@ -39,7 +39,7 @@ jobs:
 
       - name: Google Chat Notification - Robottelo
         if: ${{ failure() }}
-        uses: Co-qn/google-chat-notification@releases/v1
+        uses: colpal/actions-google-chat-notification@releases/v1
         with:
           name: ${{ env.title }}
           url: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
