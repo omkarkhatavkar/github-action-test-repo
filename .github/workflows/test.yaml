@@ -32,3 +32,11 @@ jobs:
           labels: auto-cherry-pick-failed
           assignees: "${{ github.event.pull_request.user.login }}"
 
+      - name: Google Chat Notification - Robottelo
+        if: ${{ failure() }}
+        uses: Co-qn/google-chat-notification@releases/v1
+        with:
+          name: "[Failed-AutoCherryPick] - ${{ github.event.pull_request.title }}"
+          url: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
+          status: failure
+
