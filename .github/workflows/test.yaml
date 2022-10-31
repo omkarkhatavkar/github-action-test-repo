@@ -7,43 +7,55 @@ on:
       - closed
 
 jobs:
-  build-and-test:
+  auto-cherry-pick:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Something that might fail
+      - name: Failing this Step
         run: exit 1
-      - name: Set issue title
-        if: ${{ failure() }}
-        run: |
-            echo "title=[Failed-AutoCherryPick] - ${{ github.event.pull_request.title }}" >> "$GITHUB_ENV"
-      - name: Create Issue on Failed workflow
-        if: ${{ failure() }}
-        uses: dacbd/create-issue-action@main
-        with:
-          token: ${{ github.token }}
-          title: |
-            ${{ env.title }}
-          body: |
-            #### Auto-Cherry-Pick WorkFlow Failure:
+  
+  set-title:
+      runs-on: ubuntu-latest
+      if: ${{ always() && contains(join(needs.*.result, ','), 'failure') }}
+      needs: auto-cherry-pick
+      steps:
+        - name: Set issue title        
+          run: |
+              echo "title=[Failed-AutoCherryPick] - ${{ github.event.pull_request.title }}" >> "$GITHUB_ENV"
 
-            - [Failed Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+  create-issue:
+      runs-on: ubuntu-latest
+      if: ${{ always() && contains(join(needs.*.result, ','), 'failure') }}
+      needs: auto-cherry-pick
+      steps:
+        - name: Create Issue on Failed workflow
+        - uses: dacbd/create-issue-action@main
+          with:
+            token: ${{ github.token }}
+            title: |
+              ${{ env.title }}
+            body: |
+              #### Auto-Cherry-Pick WorkFlow Failure:
 
-            - [PR Number](https://github.com/${{ github.repository }}/pull/${{ github.event.number }})
+              - [Failed Cherrypick Action](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
 
-            - Workflow Name - `${{ github.workflow }}`
+              - [Parent Pull Request](https://github.com/${{ github.repository }}/pull/${{ github.event.number }})
 
-            - Job -           `${{ github.job }}`
+            labels: Failed_AutoCherryPick
+            assignees: "${{ github.event.pull_request.user.login }}"
 
-            - Status -        `${{ job.status }}`
-
-          labels: Failed_AutoCherryPick
-          assignees: "${{ github.event.pull_request.user.login }}"
-
-      - name: Google Chat Notification - Robottelo
-        if: ${{ failure() }}
-        uses: Co-qn/google-chat-notification@releases/v1
-        with:
-          name: ${{ env.title }}
-          url: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
-          status: failure
+  google-chat-notification:
+      runs-on: ubuntu-latest
+      if: ${{ always() && contains(join(needs.*.result, ','), 'failure') }}
+      needs: auto-cherry-pick
+      steps:
+        - name: Google Chat Notification - Robottelo
+        - uses: Co-qn/google-chat-notification@releases/v1
+          with:
+            name: ${{ env.title }}
+            url: ${{ secrets.GCHAT_REVIEWERS_WEBHOOK }}
+            status: failure
+          
+          
+          
+          
