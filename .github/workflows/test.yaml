@@ -1,7 +1,10 @@
 
 name: Testing Github Action 
 
-on: [pull_request]
+on:
+  pull_request_target:
+    types:
+      - closed
 
 jobs:
   build-and-test:
