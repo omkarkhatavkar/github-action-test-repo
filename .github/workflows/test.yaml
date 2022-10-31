@@ -14,15 +14,6 @@ jobs:
       - name: Failing this Step
         run: exit 1
   
-  set-title:
-    runs-on: ubuntu-latest
-    if: ${{ always() && contains(join(needs.*.result, ','), 'failure') }}
-    needs: auto-cherry-pick
-    steps:
-      - name: Set issue title        
-        run: |
-            echo "title=[Failed-AutoCherryPick] - ${{ github.event.pull_request.title }}" >> "$GITHUB_ENV"
-
   create-issue:
     runs-on: ubuntu-latest
     if: ${{ always() && contains(join(needs.*.result, ','), 'failure') }}
@@ -32,8 +23,7 @@ jobs:
         uses: dacbd/create-issue-action@main
         with:
           token: ${{ github.token }}
-          title: |
-            ${{ env.title }}
+          title: "[Failed-AutoCherryPick] - ${{ github.event.pull_request.title }}"
           body: |
             #### Auto-Cherry-Pick WorkFlow Failure:
 
@@ -52,7 +42,7 @@ jobs:
       - name: Google Chat Notification - Robottelo
         uses: Co-qn/google-chat-notification@releases/v1
         with:
-          name: ${{ env.title }}
+          name: "[Failed-AutoCherryPick] - ${{ github.event.pull_request.title }}"
           url: ${{ secrets.GCHAT_REVIEWERS_WEBHOOK }}
           status: failure
 
