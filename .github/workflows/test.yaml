@@ -43,7 +43,7 @@ jobs:
         uses: Co-qn/google-chat-notification@releases/v1
         with:
           name: "[Failed-AutoCherryPick] - ${{ github.event.pull_request.title }}"
-          url: ${{ secrets.GCHAT_REVIEWERS_WEBHOOK }}
+          url: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
           status: failure
 
           
