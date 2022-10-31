@@ -1,0 +1,34 @@
+
+name: Testing Github Action 
+
+on: [pull_request]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Something that might fail
+        run: exit 1
+      - name: Create Issue on Failed workflow
+        if: ${{ failure() }}
+        uses: dacbd/create-issue-action@main
+        with:
+          token: ${{ github.token }}
+          title: |
+            [Failed-AutoCherryPick] - ${{ github.event.pull_request.title }}
+          body: |
+            #### Auto-Cherry-Pick WorkFlow Failure:
+            
+            - [Failed Run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            
+            - [PR Number](https://github.com/${{ github.repository }}/pull/${{ github.event.number }})
+            
+            - Workflow Name - `${{ github.workflow }}`
+            
+            - Job -           `${{ github.job }}`
+            
+            - Status -        `${{ job.status }}`
+          labels: auto-cherry-pick-failed
+          assignees: "${{ github.event.pull_request.user.login }}"
+
