@@ -11,6 +11,7 @@ jobs:
       - name: Something that might fail
         run: exit 1
       - name: Set issue title
+        if: ${{ failure() }}
         run: |
             echo "title=[Failed-AutoCherryPick] - ${{ github.event.pull_request.title }}" >> "$GITHUB_ENV"
       - name: Create Issue on Failed workflow
