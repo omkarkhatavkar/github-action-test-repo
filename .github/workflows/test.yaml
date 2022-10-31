@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Failing this Step
-        run: exit 1
+        run: exit 0
   
   create-issue:
     runs-on: ubuntu-latest
