@@ -8,7 +8,7 @@ on:
 
 jobs:
   add_assignees:
-    if: !${{contains(github.event.pull_request.labels.*.name, 'Auto_Cherry_Picked')}}
+    if: "!contains(github.event.pull_request.labels.*.name, 'Auto_Cherry_Picked')"
     runs-on: ubuntu-latest
     steps:
       - uses: actions-ecosystem/action-add-assignees@v1
