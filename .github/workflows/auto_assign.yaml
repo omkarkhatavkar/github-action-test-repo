@@ -1,0 +1,17 @@
+name: Auto Assign
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+
+jobs:
+  add_assignees:
+    if: !${{contains(github.event.pull_request.labels.*.name, 'Auto_Cherry_Picked')}}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions-ecosystem/action-add-assignees@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          assignees: ${{ github.event.pull_request.user.login }}
