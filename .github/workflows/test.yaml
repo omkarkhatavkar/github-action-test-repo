@@ -32,7 +32,7 @@ jobs:
             - [Parent Pull Request](https://github.com/${{ github.repository }}/pull/${{ github.event.number }})
 
           labels: Failed_AutoCherryPick
-          assignees: "${{ github.event.pull_request.user.login }}"
+          assignees: "${{ github.event.pull_request.assignee.login }}"
 
   google-chat-notification:
     runs-on: ubuntu-latest
