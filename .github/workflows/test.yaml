@@ -42,9 +42,25 @@ jobs:
       - name: Google Chat Notification - Robottelo
         uses: Co-qn/google-chat-notification@releases/v1
         with:
-          name: "[Failed-AutoCherryPick] - ${{ github.event.pull_request.title }}"
+          name: "${{ github.event.pull_request.title }}"
           url: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
           status: failure
+  
+  find-the-last-prt-comment:
+    runs-on: ubuntu-latest
+    if: ${{ always() && contains(join(needs.*.result, ','), 'failure') }}
+    needs: auto-cherry-pick
+    steps:
+      - name: Find Comment
+        uses: peter-evans/find-comment@v2
+        id: fc
+        with:
+          issue-number: ${{ github.event.number }}
+          body-includes: "trigger: test-robottelo"
+      - run: |
+          echo ${{ steps.fc.outputs.comment-id }}
+          echo ${{ steps.fc.outputs.comment-body }}
+          echo ${{ steps.fc.outputs.comment-author }}
 
           
           
