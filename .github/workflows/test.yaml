@@ -37,6 +37,7 @@ jobs:
     steps:
       - name: Create Issue on Failed workflow
         uses: dacbd/create-issue-action@main
+        id: issue
         with:
           token: ${{ github.token }}
           title: "[Failed-AutoCherryPick] - ${{ github.event.pull_request.title }}"
@@ -49,6 +50,10 @@ jobs:
 
           labels: Failed_AutoCherryPick
           assignees: "${{ github.event.pull_request.assignee.login }}"
+      - run: |
+          echo "${{ steps.issue.outputs.json }}" | jq
+          echo "${{ steps.issue.outputs.number }}"
+
 
   google-chat-notification:
     runs-on: ubuntu-latest
