@@ -33,7 +33,7 @@ jobs:
       PR_AUTHOR: ${{ github.event.pull_request.user.login }}
       TO_BRANCH: "6.11.z"
     outputs:
-      issue_number: ${{steps.issue.outputs.number}}
+      pr_number: ${{steps.issue.outputs.number}}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -59,7 +59,7 @@ jobs:
     steps:
       - uses: mshick/add-pr-comment@v2
         with:
-          issue: ${{ needs.auto-cherry-pick.outputs.issue }}
+          issue: ${{ needs.auto-cherry-pick.outputs.pr_number }}
           message: |
             "${{needs.find-the-last-prt-comment.outputs.prt_comment}}"
 
@@ -97,5 +97,4 @@ jobs:
           name: "${{ github.event.pull_request.title }}"
           url: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
           status: failure
-
 
