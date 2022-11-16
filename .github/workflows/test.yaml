@@ -98,21 +98,4 @@ jobs:
           url: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
           status: failure
 
-  find-the-last-prt-comment:
-    runs-on: ubuntu-latest
-    needs: auto-cherry-pick
-    steps:
-      - run:
-          echo "Printing the ISSUE NUMBER from prt comment job"
-          echo "${{needs.auto-cherry-pick.outputs.issue_number}}"
-      - name: Find Comment
-        uses: peter-evans/find-comment@v2
-        id: fc
-        with:
-          issue-number: ${{ github.event.number }}
-          body-includes: "trigger: test-robottelo"
-      - run: |
-          echo ${{ steps.fc.outputs.comment-id }}
-          echo ${{ steps.fc.outputs.comment-body }}
-          echo ${{ steps.fc.outputs.comment-author }}
 
