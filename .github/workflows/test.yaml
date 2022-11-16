@@ -31,7 +31,6 @@ jobs:
             ${{ env.TO_BRANCH }}
           assignees: "${{ github.event.pull_request.assignee.login }}"
       - run: |
-          echo "${{ steps.issue.outputs.json }}" | jq
           echo "${{ steps.issue.outputs.number }}"
 
   create-issue:
