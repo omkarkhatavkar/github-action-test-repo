@@ -1,5 +1,5 @@
 
-name: Testing Github Action 
+name: Testing Github Action
 
 on:
   pull_request_target:
@@ -7,6 +7,23 @@ on:
       - closed
 
 jobs:
+
+  find-the-last-prt-comment:
+    name: Find last prt comment & save for auto-cherry-pick pr's
+    runs-on: ubuntu-latest
+    outputs:
+      prt_comment: ${{steps.fc.outputs.comment-body}}
+    steps:
+      - name: Find Comment
+        uses: peter-evans/find-comment@v2
+        id: fc
+        with:
+          issue-number: ${{ github.event.number }}
+          body-includes: "trigger: test-robottelo"
+      - run: |
+          echo ${{ steps.fc.outputs.comment-id }}
+          echo ${{ steps.fc.outputs.comment-body }}
+          echo ${{ steps.fc.outputs.comment-author }}
 
   auto-cherry-pick:
     name: Auto Cherry Pick to previous branch
@@ -34,6 +51,18 @@ jobs:
           assignees: "${{ github.event.pull_request.assignee.login }}"
       - run: |
           echo "${{ steps.issue.outputs.number }}"
+
+  add-prt-comment:
+    name: Add prt comment into Cherrypick Pr's
+    runs-on: ubuntu-latest
+    needs: [auto-cherry-pick, find-the-last-prt-comment]
+    steps:
+      - uses: mshick/add-pr-comment@v2
+        with:
+          issue: ${{ needs.auto-cherry-pick.outputs.issue }}
+          message: |
+            "${{needs.find-the-last-prt-comment.outputs.prt_comment}}"
+
 
   create-issue:
     runs-on: ubuntu-latest
@@ -68,14 +97,14 @@ jobs:
           name: "${{ github.event.pull_request.title }}"
           url: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
           status: failure
-  
+
   find-the-last-prt-comment:
     runs-on: ubuntu-latest
     needs: auto-cherry-pick
     steps:
-      - run: 
+      - run:
           echo "Printing the ISSUE NUMBER from prt comment job"
-          echo ${{needs.auto-cherry-pick.outputs.issue_number}}
+          echo "${{needs.auto-cherry-pick.outputs.issue_number}}"
       - name: Find Comment
         uses: peter-evans/find-comment@v2
         id: fc
@@ -87,6 +116,3 @@ jobs:
           echo ${{ steps.fc.outputs.comment-body }}
           echo ${{ steps.fc.outputs.comment-author }}
 
-          
-          
-          
