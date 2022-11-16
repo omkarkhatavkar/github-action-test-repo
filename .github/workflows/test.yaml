@@ -15,6 +15,8 @@ jobs:
     env:
       PR_AUTHOR: ${{ github.event.pull_request.user.login }}
       TO_BRANCH: "6.11.z"
+    outputs:
+      issue_number: ${{steps.issue.outputs.number}}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -69,9 +71,11 @@ jobs:
   
   find-the-last-prt-comment:
     runs-on: ubuntu-latest
-    if: ${{ always() && contains(join(needs.*.result, ','), 'failure') }}
     needs: auto-cherry-pick
     steps:
+      - run: 
+          echo "Printing the ISSUE NUMBER from prt comment job"
+          echo ${{needs.auto-cherry-pick.outputs.issue_number}}
       - name: Find Comment
         uses: peter-evans/find-comment@v2
         id: fc
