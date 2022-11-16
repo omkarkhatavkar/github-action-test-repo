@@ -61,7 +61,7 @@ jobs:
         with:
           issue: ${{ needs.auto-cherry-pick.outputs.pr_number }}
           message: |
-            "${{needs.find-the-last-prt-comment.outputs.prt_comment}}"
+            ${{needs.find-the-last-prt-comment.outputs.prt_comment}}
 
 
   create-issue:
