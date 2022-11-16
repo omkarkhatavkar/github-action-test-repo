@@ -21,6 +21,7 @@ jobs:
           fetch-depth: 0
       - name: Cherry pick into ${{ env.TO_BRANCH }}
         uses: omkarkhatavkar/github-cherry-pick-action@output_pr
+        id: issue
         with:
           author: ${{ env.PR_AUTHOR }} <${{ env.PR_AUTHOR }}@users.noreply.github.com>
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -40,7 +41,6 @@ jobs:
     steps:
       - name: Create Issue on Failed workflow
         uses: dacbd/create-issue-action@main
-        id: issue
         with:
           token: ${{ github.token }}
           title: "[Failed-AutoCherryPick] - ${{ github.event.pull_request.title }}"
