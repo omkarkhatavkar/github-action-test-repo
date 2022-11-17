@@ -66,8 +66,11 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ always() && contains(join(needs.*.result, ','), 'failure') }}
     needs: auto-cherry-pick
+    outputs:
+      issue_url: ${{steps.create_issue.outputs.html_url}}
     steps:
       - name: Create Issue on Failed workflow
+        id: create_issue
         uses: dacbd/create-issue-action@main
         with:
           token: ${{ github.token }}
@@ -86,13 +89,14 @@ jobs:
 
   google-chat-notification:
     runs-on: ubuntu-latest
-    if: ${{ always() && contains(join(needs.*.result, ','), 'failure') }}
-    needs: auto-cherry-pick
+    if: ${{ always() && contains(join(needs.auto-cherry-pick.result, ','), 'failure') }}
+    needs: [auto-cherry-pick, create-issue]
     steps:
       - name: Google Chat Notification - Robottelo
         uses: omkarkhatavkar/google-chat-notification@add_author_name
         with:
           name: "${{ github.event.pull_request.title }}"
           url: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
+          issue_url: ${{ needs.create-issue.outputs.issue_url }}
           status: failure
 
