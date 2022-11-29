@@ -39,7 +39,7 @@ jobs:
         id: issue
         with:
           author: ${{ env.PR_AUTHOR }} <${{ env.PR_AUTHOR }}@users.noreply.github.com>
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.SATQE }}
           branch: ${{ env.TO_BRANCH }}
           labels: |
             Auto_Cherry_Picked
