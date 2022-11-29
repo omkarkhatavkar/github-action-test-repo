@@ -12,28 +12,26 @@ on:
       - reopened
   
 jobs:
-
-  find-the-prt-comment:
-    name: Find the prt comment on the pr
-    if: contains(github.event.pull_request.labels.*.name, 'Auto_Cherry_Picked')
-    runs-on: ubuntu-latest
-    outputs:
-      prt_comment: ${{steps.fc.outputs.comment-body}}
-    steps:
-      - name: Find the prt comment
-        uses: peter-evans/find-comment@v2
-        id: fc
-        with:
-          issue-number: ${{ github.event.number }}
-          body-includes: "trigger: test-robottelo"
-          direction: last
-          token: ${{ secrets.SATQE }}
+#   find-the-prt-comment:
+#     name: Find the prt comment on the pr
+#     if: contains(github.event.pull_request.labels.*.name, 'Auto_Cherry_Picked')
+#     runs-on: ubuntu-latest
+#     outputs:
+#       prt_comment: ${{steps.fc.outputs.comment-body}}
+#     steps:
+#       - name: Find the prt comment
+#         uses: peter-evans/find-comment@v2
+#         id: fc
+#         with:
+#           issue-number: ${{ github.event.number }}
+#           body-includes: "trigger: test-robottelo"
+#           direction: last
+#           token: ${{ secrets.SATQE }}
 
   automerge:
-    needs: find-the-prt-comment
     name: Automerge auto-cherry-picked pr
     runs-on: ubuntu-latest
-    if: needs.find-the-parent-prt-comment.outputs.prt_comment != '[]'
+    if: contains(github.event.pull_request.labels.*.name, 'Auto_Cherry_Picked')
     steps:
       - name: 'Wait for status checks'
         id: wait-for-status-checks
