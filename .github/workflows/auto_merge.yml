@@ -1,5 +1,4 @@
-name: automerge auto-cherry-picked pr's
-
+name: 'automerge auto-cherry-picked pr'
 on:
   pull_request_target:
     types:
