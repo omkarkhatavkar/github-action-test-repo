@@ -39,14 +39,14 @@ jobs:
         with:
           checkInterval: 30
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: "${{ secrets.SATQE }}"
 
       - id: automerge
         name: automerge the cherry-picked pr
         uses: "pascalgn/automerge-action@v0.15.5"
         if: steps.waitforstatuschecks.outputs.status == 'success'
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: "${{ secrets.SATQE }}"
           MERGE_LABELS: "automerge, Auto_Cherry_Picked"
           MERGE_METHOD: "squash"
           MERGE_RETRIES: 5
