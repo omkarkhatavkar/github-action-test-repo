@@ -47,8 +47,7 @@ jobs:
           assignees: "${{ github.event.pull_request.assignee.login }}"
       - run: |
           echo "${{ steps.issue.outputs.number }}"
-          exit 1
-      
+     
 
   add-prt-comment:
     name: Add prt comment into Cherrypick Pr's
