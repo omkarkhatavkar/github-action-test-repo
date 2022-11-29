@@ -44,7 +44,7 @@ jobs:
         id: wait-for-status-checks
         uses: "WyriHaximus/github-action-wait-for-status@v2"
         with:
-          checkInterval: 300
+          checkInterval: 30
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
@@ -57,7 +57,7 @@ jobs:
           MERGE_LABELS: "automerge, Auto_Cherry_Picked"
           MERGE_METHOD: "squash"
           MERGE_RETRIES: 5
-          MERGE_RETRY_SLEEP: 900000
+          MERGE_RETRY_SLEEP: 30000
 
       - name: provide the feedback about the automerge result
         if: steps.automerge.outputs.mergeResult == "merged"
