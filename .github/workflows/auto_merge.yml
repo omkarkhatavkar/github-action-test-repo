@@ -1,0 +1,64 @@
+name: automerge auto-cherry-picked pr's
+on:
+  pull_request:
+    types:
+      - labeled
+      - unlabeled
+      - synchronize
+      - opened
+      - edited
+      - ready_for_review
+      - reopened
+  pull_request_review:
+    types:
+      - submitted
+  check_suite:
+    types:
+      - completed
+  status: {}
+
+jobs:
+
+  find-the-prt-comment:
+    name: Find the prt comment on the pr
+    runs-on: ubuntu-latest
+    outputs:
+      prt_comment: ${{steps.fc.outputs.comment-body}}
+    steps:
+      - name: Find the prt comment
+        uses: peter-evans/find-comment@v2
+        id: fc
+        with:
+          issue-number: ${{ github.event.number }
+          body-includes: "trigger: test-robottelo"
+          direction: last
+
+  automerge:
+    needs: find-the-prt-comment
+    name: Automerge auto-cherry-picked pr
+    runs-on: ubuntu-latest
+    if: needs.find-the-parent-prt-comment.outputs.prt_comment != '[]'
+    steps:
+      - name: 'Wait for status checks'
+          id: wait-for-status-checks
+          uses: "WyriHaximus/github-action-wait-for-status@v2"
+          with:
+            checkInterval: 300
+          env:
+            GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+      - id: automerge
+        name: automerge the cherry-picked pr
+        uses: "pascalgn/automerge-action@v0.15.5"
+        if: steps.waitforstatuschecks.outputs.status == 'success'
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_LABELS: "automerge, Auto_Cherry_Picked"
+          MERGE_METHOD: "squash"
+          MERGE_RETRIES: 5
+          MERGE_RETRY_SLEEP: 900000
+
+      - name: provide the feedback about the automerge result
+          if: steps.automerge.outputs.mergeResult == "merged"
+          run: |
+            echo "Pull request ${{ steps.automerge.outputs.pullRequestNumber }} merged!"
