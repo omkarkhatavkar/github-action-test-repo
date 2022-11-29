@@ -1,28 +1,26 @@
-name: 'automerge auto-cherry-picked pr'
-# on:
-#   pull_request_target:
-#     types:
-#       - labeled
-#       - unlabeled
-#       - synchronize
-#       - opened
-#       - edited
-#       - ready_for_review
-#       - reopened
-#     branches-ignore:
-#       - main
-#   pull_request_review:
-#     types:
-#       - submitted
-#   check_suite:
-#     types:
-#       - completed
-#   status: {}
+name: Automerge workflow
 
 on:
-  schedule:
-    # * is a special character in YAML so you have to quote this string
-    - cron:  '*/1 * * * *'
+  check_suite:
+    types:
+      - completed
+  pull_request:
+    branches-ignore:
+      - main
+    types:
+      - labeled
+      - unlabeled
+      - synchronize
+      - opened
+      - edited
+      - ready_for_review
+      - reopened
+      - unlocked
+  pull_request_review:
+    types:
+      - submitted
+  status: {}
+
   
 jobs:
   automerge:
@@ -33,7 +31,6 @@ jobs:
       - id: automerge
         name: automerge the cherry-picked pr
         uses: "pascalgn/automerge-action@v0.15.5"
-        if: steps.waitforstatuschecks.outputs.status == 'success'
         env:
           GITHUB_TOKEN: "${{ secrets.SATQE }}"
           MERGE_LABELS: "automerge, Auto_Cherry_Picked"
