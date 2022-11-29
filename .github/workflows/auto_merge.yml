@@ -9,6 +9,8 @@ on:
       - edited
       - ready_for_review
       - reopened
+    branches-ignore:
+      - main
   
 jobs:
 #   find-the-prt-comment:
