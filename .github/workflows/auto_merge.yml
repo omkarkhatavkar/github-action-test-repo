@@ -59,7 +59,3 @@ jobs:
           MERGE_RETRIES: 5
           MERGE_RETRY_SLEEP: 30000
 
-      - name: provide the feedback about the automerge result
-        if: steps.automerge.outputs.mergeResult == "merged"
-        run: |
-          echo "Pull request ${{ steps.automerge.outputs.pullRequestNumber }} merged!"
