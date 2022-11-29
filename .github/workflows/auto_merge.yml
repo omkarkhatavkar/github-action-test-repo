@@ -11,12 +11,6 @@ on:
       - ready_for_review
       - reopened
   
-  pull_request_review:
-    types:
-      - submitted
-  
-  status: {}
-  
 jobs:
 
   find-the-prt-comment:
