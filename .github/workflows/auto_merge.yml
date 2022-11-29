@@ -1,23 +1,28 @@
 name: 'automerge auto-cherry-picked pr'
+# on:
+#   pull_request_target:
+#     types:
+#       - labeled
+#       - unlabeled
+#       - synchronize
+#       - opened
+#       - edited
+#       - ready_for_review
+#       - reopened
+#     branches-ignore:
+#       - main
+#   pull_request_review:
+#     types:
+#       - submitted
+#   check_suite:
+#     types:
+#       - completed
+#   status: {}
+
 on:
-  pull_request_target:
-    types:
-      - labeled
-      - unlabeled
-      - synchronize
-      - opened
-      - edited
-      - ready_for_review
-      - reopened
-    branches-ignore:
-      - main
-  pull_request_review:
-    types:
-      - submitted
-  check_suite:
-    types:
-      - completed
-  status: {}
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '*/5 * * * *'
   
 jobs:
   automerge:
