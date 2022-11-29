@@ -32,14 +32,6 @@ jobs:
     runs-on: ubuntu-latest
     if: contains(github.event.pull_request.labels.*.name, 'Auto_Cherry_Picked')
     steps:
-      - name: 'Wait for status checks'
-        id: wait-for-status-checks
-        uses: "WyriHaximus/github-action-wait-for-status@v1.7.1"
-        with:
-          checkInterval: 30
-        env:
-          GITHUB_TOKEN: ${{ secrets.SATQE }}
-
       - id: automerge
         name: automerge the cherry-picked pr
         uses: "pascalgn/automerge-action@v0.15.5"
