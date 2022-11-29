@@ -59,6 +59,7 @@ jobs:
           issue: ${{ needs.auto-cherry-pick.outputs.pr_number }}
           message: |
             ${{needs.find-the-last-prt-comment.outputs.prt_comment}}
+          repo-token: ${{ secrets.SATQE }}
 
 
   create-issue:
