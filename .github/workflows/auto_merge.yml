@@ -14,6 +14,7 @@ jobs:
 
   find-the-prt-comment:
     name: Find the prt comment on the pr
+    if: contains(github.event.pull_request.labels.*.name, 'Auto_Cherry_Picked')
     runs-on: ubuntu-latest
     outputs:
       prt_comment: ${{steps.fc.outputs.comment-body}}
@@ -34,7 +35,7 @@ jobs:
     steps:
       - name: 'Wait for status checks'
         id: wait-for-status-checks
-        uses: "WyriHaximus/github-action-wait-for-status@v2"
+        uses: "WyriHaximus/github-action-wait-for-status@v1.7.1"
         with:
           checkInterval: 30
         env:
