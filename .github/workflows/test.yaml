@@ -20,6 +20,7 @@ jobs:
         with:
           issue-number: ${{ github.event.number }}
           body-includes: "trigger: test-robottelo"
+          token: ${{ secrets.SATQE }}
 
   auto-cherry-pick:
     name: Auto Cherry Pick to previous branch
