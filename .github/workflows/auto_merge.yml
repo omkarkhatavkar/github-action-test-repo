@@ -10,6 +10,13 @@ on:
       - edited
       - ready_for_review
       - reopened
+  
+  pull_request_review:
+    types:
+      - submitted
+  
+  status: {}
+  
 jobs:
 
   find-the-prt-comment:
@@ -26,6 +33,7 @@ jobs:
           issue-number: ${{ github.event.number }}
           body-includes: "trigger: test-robottelo"
           direction: last
+          token: ${{ secrets.SATQE }}
 
   automerge:
     needs: find-the-prt-comment
@@ -39,7 +47,7 @@ jobs:
         with:
           checkInterval: 30
         env:
-          GITHUB_TOKEN: "${{ secrets.SATQE }}"
+          GITHUB_TOKEN: ${{ secrets.SATQE }}
 
       - id: automerge
         name: automerge the cherry-picked pr
