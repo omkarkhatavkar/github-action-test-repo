@@ -10,14 +10,6 @@ on:
       - edited
       - ready_for_review
       - reopened
-  pull_request_review:
-    types:
-      - submitted
-  check_suite:
-    types:
-      - completed
-  status: {}
-
 jobs:
 
   find-the-prt-comment:
