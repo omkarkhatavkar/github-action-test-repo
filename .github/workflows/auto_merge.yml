@@ -10,7 +10,8 @@ on:
       - unlabeled
       - ready_for_review
     
-
+    branches-ignore:
+      - main 
 
 jobs:
   auto-merge:
