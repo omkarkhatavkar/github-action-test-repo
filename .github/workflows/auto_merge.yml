@@ -41,7 +41,7 @@ jobs:
         if: ${{steps.find-prt-comment.outputs.comment-body}} == ""
         run: | 
           echo "PRT comment not added the PR"
-          echo 1
+          exit 1
 
       - id: automerge
         name: automerge
