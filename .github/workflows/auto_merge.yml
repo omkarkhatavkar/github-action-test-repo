@@ -32,7 +32,7 @@ jobs:
         uses: peter-evans/find-comment@v2
         id: fc
         with:
-          issue-number: ${{ github.event.number }
+          issue-number: ${{ github.event.number }}
           body-includes: "trigger: test-robottelo"
           direction: last
 
