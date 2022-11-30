@@ -26,5 +26,3 @@ jobs:
         with:
           token: ${{ secrets.SATQE }}
           merge-method: squash
-          required-labels: 'automerge,Auto_Cherry_Picked'
-          pull-request: ${{ github.event.inputs.pull-request }}
