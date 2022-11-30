@@ -74,7 +74,7 @@ jobs:
         id: create_issue
         uses: dacbd/create-issue-action@main
         with:
-          token: ${{ github.token }}
+          token: ${{ secrets.SATQE }}
           title: "[Failed-AutoCherryPick] - ${{ github.event.pull_request.title }}"
           body: |
             #### Auto-Cherry-Pick WorkFlow Failure:
