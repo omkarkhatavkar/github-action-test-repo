@@ -28,3 +28,4 @@ jobs:
           merge-method: squash
           squash-commit-title: ${pull_request.title}
           
+          
