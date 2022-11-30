@@ -33,17 +33,20 @@ jobs:
           body-includes: "trigger: test-robottelo"
           direction: last
 
-      - name: print the prt comment
-        run: |
-         echo "${{steps.find-prt-comment.outputs.comment-body}}"
-
-      - name: Fail automerge if PRT was not initiated
-        if: ${{steps.find-prt-comment.outputs.comment-body}} == ""
-        run: | 
-          echo "PRT comment not added the PR"
-          echo 1
-
-      - id: automerge
+ automerge:
+    needs: find-the-prt-comment
+    name: Automerge auto-cherry-picked pr
+    runs-on: ubuntu-latest
+    if: needs.find-the-parent-prt-comment.outputs.prt_comment != '[]'
+    steps:
+#       - name: 'Wait for status checks'
+#         id: wait-for-status-checks
+#         uses: "WyriHaximus/github-action-wait-for-status@v1.7.1"
+#         with:
+#           checkInterval: 300
+#         env:
+#           GITHUB_TOKEN: "${{ secrets.SATQE }}"
+     - id: automerge
         name: automerge
         uses: "pascalgn/automerge-action@v0.15.5"
         env:
@@ -64,3 +67,4 @@ jobs:
         if: steps.automerge.outputs.mergeResult == 'merged'
         run: |
           echo "Pull request ${{ steps.automerge.outputs.pullRequestNumber }} merged!"
+
