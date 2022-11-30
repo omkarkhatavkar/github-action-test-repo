@@ -26,3 +26,5 @@ jobs:
         with:
           token: ${{ secrets.SATQE }}
           merge-method: squash
+          squash-commit-title: ${pull_request.title}
+          
