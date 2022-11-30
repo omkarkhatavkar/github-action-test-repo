@@ -49,7 +49,7 @@ jobs:
 #           checkInterval: 300
 #         env:
 #           GITHUB_TOKEN: "${{ secrets.SATQE }}"
-      - id: automerge
+     - id: automerge
         name: automerge
         uses: "pascalgn/automerge-action@v0.15.5"
 #       if: steps.waitforstatuschecks.outputs.status == 'success'
