@@ -60,6 +60,13 @@ jobs:
           MERGE_RETRIES: 5
           MERGE_RETRY_SLEEP: 900000
 
+      - name: provide the feedback about the automerge result failed
+        if: steps.automerge.outputs.mergeResult != 'merged'
+        run: |
+          echo "Pull request ${{ steps.automerge.outputs.pullRequestNumber }} failed !"
+          echo "It is failed because of ${{steps.automerge.outputs.mergeResult}}"
+          exit 1
+
       - name: provide the feedback about the automerge result
         if: steps.automerge.outputs.mergeResult == 'merged'
         run: |
