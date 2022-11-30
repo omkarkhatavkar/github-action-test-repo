@@ -1,40 +1,28 @@
-name: Automerge workflow
-
+name: "Auto Merge"
 on:
-  check_suite:
+  pull_request_target:
     types:
-      - completed
-  pull_request:
-    branches-ignore:
-      - main
-    types:
+      - opened
+      - synchronize
+      - reopened
+      - edited
       - labeled
       - unlabeled
-      - synchronize
-      - opened
-      - edited
       - ready_for_review
-      - reopened
-      - unlocked
-  pull_request_review:
-    types:
-      - submitted
-  status: {}
+  workflow_dispatch:
+    inputs:
+      pull-request:
+        description: Pull Request Number
+        required: false
 
-  
 jobs:
-  automerge:
-    name: Automerge auto-cherry-picked pr
+  auto-merge:
+    name: Auto Merge
     runs-on: ubuntu-latest
-    if: contains(github.event.pull_request.labels.*.name, 'Auto_Cherry_Picked')
     steps:
-      - id: automerge
-        name: automerge the cherry-picked pr
-        uses: "pascalgn/automerge-action@v0.15.5"
-        env:
-          GITHUB_TOKEN: "${{ secrets.SATQE }}"
-          MERGE_LABELS: "automerge, Auto_Cherry_Picked"
-          MERGE_METHOD: "squash"
-          MERGE_RETRIES: 5
-          MERGE_RETRY_SLEEP: 30000
-
+      - uses: reitermarkus/automerge@v2
+        with:
+          token: ${{ secrets.SATQE }}
+          merge-method: squash
+          required-labels: 'automerge,Auto_Cherry_Picked'
+          pull-request: ${{ github.event.inputs.pull-request }}
