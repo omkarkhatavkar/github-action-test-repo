@@ -2,7 +2,7 @@ name: "Auto Merge"
 on:
   # Try enabling auto-merge for all open pull requests.
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "*/1 * * * *"
     
   pull_request_target:
     types:
