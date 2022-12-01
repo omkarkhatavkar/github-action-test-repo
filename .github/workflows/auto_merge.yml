@@ -38,7 +38,7 @@ jobs:
          echo "${{steps.find-prt-comment.outputs.comment-body}}"
 
       - name: Fail automerge if PRT was not initiated
-        if: ${{steps.find-prt-comment.outputs.comment-body}} == ""
+        if: steps.find-prt-comment.outputs.comment-body == ""
         run: | 
           echo "PRT comment not added the PR"
           exit 1
@@ -60,7 +60,7 @@ jobs:
           echo "It is failed because of ${{steps.automerge.outputs.mergeResult}}"
           exit 1
 
-      - name: provide the feedback about the automerge result id passed
+      - name: provide the feedback about the automerge result if passed
         if: steps.automerge.outputs.mergeResult == 'merged'
         run: |
           echo "Pull request ${{ steps.automerge.outputs.pullRequestNumber }} merged!"
