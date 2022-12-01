@@ -38,7 +38,7 @@ jobs:
          echo "${{steps.find-prt-comment.outputs.comment-body}}"
 
       - name: Fail automerge if PRT was not initiated
-        if: steps.find-prt-comment.outputs.comment-body == ""
+        if: steps.find-prt-comment.outputs.comment-body == ''
         run: | 
           echo "PRT comment not added the PR"
           exit 1
