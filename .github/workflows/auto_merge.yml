@@ -48,7 +48,7 @@ jobs:
         uses: "pascalgn/automerge-action@v0.15.5"
         env:
           GITHUB_TOKEN: "${{ secrets.SATQE }}"
-          MERGE_LABELS: "automerge, Auto_Cherry_Picked"
+          MERGE_LABELS: "AutoMerge_Cherry_Picked, Auto_Cherry_Picked"
           MERGE_METHOD: "squash"
           MERGE_RETRIES: 5
           MERGE_RETRY_SLEEP: 900000
