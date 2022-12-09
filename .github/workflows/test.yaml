@@ -52,7 +52,7 @@ jobs:
         if: ${{ always() && steps.issue.outcome == 'success' && contains(github.event.pull_request.labels.*.name, 'AutoMerge_Cherry_Picked') }}
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.CHERRYPICK_PAT }}
+          github-token: ${{ secrets.SATQE }}
           script: |
             github.rest.issues.addLabels({
               issue_number: ${{ steps.issue.outputs.pr_number }},
