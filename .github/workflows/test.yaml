@@ -48,6 +48,18 @@ jobs:
           assignees: "${{ github.event.pull_request.assignee.login }}"
       - run: |
           echo "${{ steps.issue.outputs.number }}"
+      - name: is autoMerging enabled for Auto CherryPicked PRs ?
+        if: ${{ always() && steps.issue.outcome == 'success' && contains(github.event.pull_request.labels.*.name, 'AutoMerge_Cherry_Picked') }}
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.CHERRYPICK_PAT }}
+          script: |
+            github.rest.issues.addLabels({
+              issue_number: ${{ steps.issue.outputs.pr_number }},
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ["AutoMerge_Cherry_Picked"]
+            })
      
 
   add-prt-comment:
