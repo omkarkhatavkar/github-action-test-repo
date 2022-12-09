@@ -55,7 +55,7 @@ jobs:
           github-token: ${{ secrets.SATQE }}
           script: |
             github.rest.issues.addLabels({
-              issue_number: ${{ steps.issue.outputs.pr_number }},
+              issue_number: ${{ steps.issue.outputs.number }},
               owner: context.repo.owner,
               repo: context.repo.repo,
               labels: ["AutoMerge_Cherry_Picked"]
