@@ -47,6 +47,10 @@ jobs:
           echo "PRT comment not added the PR"
           exit 1
       
+      - name: print the event name
+        run: |
+          echo "${{ github.event_name }}"
+      
       - name: Wait for PRT checks to get initiated
         if: ${{ github.event_name }} == "issue_comment"
         run: |
