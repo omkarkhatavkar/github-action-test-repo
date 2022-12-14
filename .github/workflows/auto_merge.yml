@@ -54,6 +54,7 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" == 'issue_comment' ]; then
             echo "Waiting for 5 min, PRT to be initiated." && sleep 300 
+          fi
 
       - id: automerge
         name: automerge
