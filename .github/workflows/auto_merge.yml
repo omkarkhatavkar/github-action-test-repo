@@ -12,6 +12,10 @@ on:
       - unlocked
     branches-ignore:
       - main
+  issue_comment:
+    types:
+      - created
+      - deleted
   pull_request_review:
     types:
       - submitted
