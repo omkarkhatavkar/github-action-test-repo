@@ -42,6 +42,12 @@ jobs:
         run: | 
           echo "PRT comment not added the PR"
           exit 1
+      
+      - name: Wait for PRT checks to get initiated
+        if: ${{ github.event_name }} == "issue_comment"
+        run: |
+          echo "Waiting for 5 min, PRT to be initiated."
+          sleep 300
 
       - id: automerge
         name: automerge
