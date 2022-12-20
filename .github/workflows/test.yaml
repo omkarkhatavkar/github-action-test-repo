@@ -112,5 +112,6 @@ jobs:
           name: "${{ github.event.pull_request.title }}"
           url: ${{ secrets.GOOGLE_CHAT_WEBHOOK }}
           issue_url: ${{ needs.create-issue.outputs.issue_url }}
+          author: "${{ github.event.pull_request.assignee.login }}"
           status: failure
 
